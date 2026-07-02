@@ -1,0 +1,1 @@
+based_at(Grozny, Aleksandr_Prudnikov), city(Grozny, City), height(Alekandr_Prudnikov, 185_cm), club(Alekandr_Prudnikov, FC_Terek_Grozny), isPartOf(FC_Terek_Grozny, FC_Amkar_Perm), manager(FC_Amkar_Perm, Gadzhi_Gadzhiyev)

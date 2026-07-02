@@ -1,0 +1,1 @@
+location(Cumberland_County,_Pennsylvania, Adams_County,_Pennsylvania), hasToItsSoutheast(Adams_County,_Pennsylvania, Carroll_County,_Maryland), location(Gettysburg,_Maryland, Gettysburg,_Pennsylvania), category(11th_Mississippi_Infantry_Monument, Contributing_property)

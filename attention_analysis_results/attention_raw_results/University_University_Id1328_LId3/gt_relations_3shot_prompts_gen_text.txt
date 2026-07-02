@@ -1,0 +1,1 @@
+city(Acharya_Institute_of_Technology, Bangalore), established(Acharya_Institute_of_Technology, 2000), affiliation(Acharya_Institute_of_Technology, Visvesvaraya_Technological_University), campus(Acharya_Institute_of_Technology, "At Soldevanahalli, Acharya Dr. Sarvapalli Radhakrishnan Road, Hessarghatta Main Road, Bangalore – 560090.")

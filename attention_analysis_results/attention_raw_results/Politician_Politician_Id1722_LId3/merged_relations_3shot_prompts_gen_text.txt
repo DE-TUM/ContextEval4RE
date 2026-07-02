@@ -1,0 +1,1 @@
+office(Abraham_A._Ribicoff, "United States Secretary of Health, Education, and Welfare"), birthPlace(Abraham_A._Ribicoff, United_States), spouse(Abraham_A._Ribicoff, "Ruth Ribicoff")

@@ -1,0 +1,1 @@
+served(Bionico, Dessert_course), ingredient(Bionico, Sour_cream), country(Bionico, Mexico), currency(Mexican_peso), demonym(Mexicans)

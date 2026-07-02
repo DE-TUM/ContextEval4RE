@@ -1,0 +1,1 @@
+type(GMA New Media, Media_company), industry(GMA New Media, Web_services), location(GMA New Media, Philippines)

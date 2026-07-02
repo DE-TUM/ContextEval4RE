@@ -1,0 +1,199 @@
+import re
+from typing import List, Dict, Set, Tuple
+import json
+import os
+
+# load json
+def load_json(file_path):
+    with open(file_path, 'r', encoding="utf-8") as f:
+        return json.load(f)
+    
+# load jsonl
+def load_jsonl(file_path):
+    with open(file_path, 'r', encoding="utf-8") as f:
+        return [json.loads(line.strip()) for line in f]
+
+# save json
+def save_json(data, file_path):
+    """Save a Python object as a JSON file with UTF-8 encoding."""
+    os.makedirs(os.path.dirname(file_path), exist_ok=True)
+    with open(file_path, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
+# convert list to dict
+def convert_to_dict(data: List[Dict], id_name: str = "id") -> Dict:
+    """
+    Utility method to convert a list to a dictionary
+    :param data: a list of dictionary objects
+    :param id_name: the attribute to be used as the key for the dictionary
+    :return: a dictionary with the same content as the list
+    """
+    return {item[id_name]: item for item in data}
+
+# parse result string to triples
+def parse_result(result_str):
+    triples = []
+    # pattern = re.compile(r'(\w+)\(')
+    pattern = re.compile(r'([^(]+)\(')
+    pos = 0
+    while True:
+        match = pattern.search(result_str, pos)
+        if not match:
+            break
+        relation = match.group(1)
+        start = match.end()
+        depth = 1
+        i = start
+        while i < len(result_str) and depth > 0:
+            if result_str[i] == '(':
+                depth += 1
+            elif result_str[i] == ')':
+                depth -= 1
+            i += 1
+        inside = result_str[start:i-1]
+        parts = inside.split(',', 1)
+        if len(parts) == 2:
+            subject, obj = parts
+            triples.append([subject.strip(), relation.strip(), obj.strip()])
+        pos = i
+    return triples
+
+def robust_parse_triples(result_str):
+    if not result_str: return []
+    triples = []
+    # 匹配关系名(内容)
+    import re
+    pattern = re.compile(r'([^()\n]+)\(')
+    pos = 0
+    while True:
+        match = pattern.search(result_str, pos)
+        if not match: break
+        relation = match.group(1).strip().strip(',').strip()
+        start = match.end()
+        depth, i = 1, start
+        while i < len(result_str) and depth > 0:
+            if result_str[i] == '(': depth += 1
+            elif result_str[i] == ')': depth -= 1
+            i += 1
+        inside = result_str[start:i-1]
+        parts = inside.rsplit(',', 1) # 从右分割，处理名字里的逗号
+        if len(parts) == 2:
+            triples.append((parts[0].strip(), relation, parts[1].strip())) # 转为 tuple 方便集合比较
+        pos = i
+    return triples
+
+# calculate precision, recall, f1
+def calculate_precision_recall_f1(gold: set, pred: set) -> Tuple[float, float, float]:
+
+    """
+    Method to calculate precision, recall and f1:
+        Precision is calculated as correct_triples/predicted_triples and
+        Recall as correct_triples/gold_triples
+        F1 as the harmonic mean of precision and recall.
+    :param gold: items in the gold standard
+    :param pred: items in the system prediction
+    :return:
+        p: float - precision
+        r: float - recall
+        f1: float - F1
+
+    Example: 
+    gold: {
+    'newyorklocatedinunitedstates', 
+    'berlincapitalofgermany', 
+    'pariscapitaloffrance', 
+    'machinelearningisaaifield'
+    }
+    pred: {
+    'newyorklocatedinusa', 
+    'berlincapitalofgermany', 
+    'pariscapitaloffrance', 
+    'aiisaatechnology'
+    }
+    """
+    if len(pred) == 0:
+        return 0, 0, 0
+    p = len(gold.intersection(pred)) / len(pred)
+    r = len(gold.intersection(pred)) / len(gold)
+    if p + r > 0:
+        f1 = 2 * ((p * r) / (p + r))
+    else:
+        f1 = 0
+    return p, r, f1
+
+# Normalize triples
+def normalize_triple(sub_label: str, rel_label: str, obj_label: str) -> str:
+    """
+    Normalize triples for comparison in precision, recall calculations
+    :param sub_label: subject string
+    :param rel_label: relation string
+    :param obj_label: object string
+    :return: a normalized triple as a single concatenated string
+
+    Example:
+    >>> normalize_triple("New York", "located_in", "United States")
+    'newyorklocatedinunitedstates'
+
+    >>> normalize_triple("Machine_Learning", "is_a", "AI Field")
+    'machinelearningisaaifield'
+    """
+    # remove spaces and underscores and make lower case
+    sub_label = re.sub(r"(_|\s+)", '', sub_label).lower()
+    rel_label = re.sub(r"(_|\s+)", '', rel_label).lower()
+    obj_label = re.sub(r"(_|\s+)", '', obj_label).lower()
+    # concatenate them to a single string
+    tr_key = f"{sub_label}{rel_label}{obj_label}"
+    return tr_key
+
+
+def get_rc_cand(triples: list, prompt_rels: list) -> float:
+    """
+    Compute rc_cand (relation conformance in candidates)
+    = the proportion of generated relations that appear in the candidate relation list.
+
+    :param triples: list of [sub, rel, obj] generated by the model
+    :param prompt_rels: list of candidate relations provided in the prompt
+    :return: rc_cand as a float
+    """
+    if len(triples) == 0:
+        return 1.0
+    num_rels_conformant = len([tr for tr in triples if tr[1] in prompt_rels])
+    return num_rels_conformant / len(triples)
+
+
+def get_rc_dom(triples: list, domain_rels: list) -> float:
+    """
+    Compute rc_dom (relation conformance in domain)
+    = the proportion of generated relations that belong to the domain ontology.
+
+    :param triples: list of [sub, rel, obj] generated by the model
+    :param domain_ontology: ontology file (dict) containing domain relations
+    :return: rc_dom as a float
+    """
+    if len(triples) == 0:
+        return 1.0
+    num_rels_conformant = len([tr for tr in triples if tr[1] in domain_rels])
+    return num_rels_conformant / len(triples)
+
+
+def get_rc_cand_unique(triples, prompt_rels):
+    if len(triples) == 0:
+        return 1.0
+    uniq = list({tr[1] for tr in triples})  # 去重后的关系列表
+
+    num = len([rel for rel in uniq if rel in prompt_rels])
+    return num / len(uniq)
+
+
+def get_rc_dom_unique(triples, domain_ontology):
+    if len(triples) == 0:
+        return 1.0
+    uniq = list({tr[1] for tr in triples})
+
+    domain_rels = [rel["label"].replace(" ", "_") 
+                   for rel in domain_ontology.get("relations", [])]
+
+    num = len([rel for rel in uniq if rel in domain_rels])
+    return num / len(uniq)
+
+

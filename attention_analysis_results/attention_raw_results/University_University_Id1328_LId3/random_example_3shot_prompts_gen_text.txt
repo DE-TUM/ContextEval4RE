@@ -1,0 +1,1 @@
+established(Acharya_Institute_of_Technology, 2000), affiliation(Visvesvaraya_Technological_University, EducationalInstitution), campus(Acharya_Institute_of_Technology, Location)

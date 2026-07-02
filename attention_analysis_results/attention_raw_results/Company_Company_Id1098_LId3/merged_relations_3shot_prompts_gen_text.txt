@@ -1,0 +1,1 @@
+location(GMA_New_Media, Philippines), product(GMA_New_Media, Web_services), type(GMA_New_Media, Media_company)

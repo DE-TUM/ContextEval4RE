@@ -1,0 +1,1 @@
+club(Aleksandr_Prudnikov, FC_Terek_Grozny), ground(FC_Terek_Grozny, Grozny), height(Aleksandr_Prudnikov, 185_cm), club(Aleksandr_Prudnikov, FC_Amkar_Perm), manager(FC_Amkar_Perm, Gadzhi_Gadzhiyev)

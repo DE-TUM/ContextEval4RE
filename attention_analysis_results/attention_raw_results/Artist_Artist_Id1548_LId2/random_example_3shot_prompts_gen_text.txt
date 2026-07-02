@@ -1,0 +1,1 @@
+ associatedMusicalArtist(Andrew_Rayel, Jwaydan_Moyine), genre(Andrew_Rayel, Trance)

@@ -1,0 +1,1 @@
+profession(Abraham_A._Ribicoff, Politician), birthPlace(Abraham_A._Ribicoff, United_States), spouse(Abraham_A._Ribicoff, Ruth_Ribicoff)
