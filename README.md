@@ -2,7 +2,7 @@
 
 This repository contains the source code, datasets, prompts, LLM outputs, and evaluation results for our paper: 
 
-**From Prompt to Context: Analyzing Context Engineering Effectiveness for LLM-based Knowledge Graph Construction**  
+**From Prompt to Context: Analyzing Context Engineering Effectiveness for LLM-based Relation Extraction**  
 
 ---
 
