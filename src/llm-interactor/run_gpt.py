@@ -8,9 +8,6 @@ from llm_utils import load_jsonl  # must return a list of dicts
 from dotenv import load_dotenv
 load_dotenv()
 
-import os
-print(os.getenv("OPENAI_API_KEY"))
-
 
 # ============================================================
 # USER CONFIGURATION
@@ -36,7 +33,7 @@ input_folder = os.path.join(
     root_folder, "prompts", f"{dataset_name}_prompts", f"{shot_number}_prompts"
 )
 output_root = os.path.join(
-    root_folder, "llm_outputs_lg", f"{dataset_name}_llm_outputs", model_name, shot_number
+    root_folder, "llm_outputs", f"{dataset_name}_llm_outputs", model_name, shot_number
 )
 log_dir = os.path.join(root_folder, "logs")
 os.makedirs(log_dir, exist_ok=True)

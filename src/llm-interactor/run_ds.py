@@ -7,13 +7,13 @@ import sys
 from llm_utils import load_jsonl, parse_result 
 
 # --- configurations ---
-client = OpenAI(api_key="###########", base_url="https://api.deepseek.com")
+client = OpenAI(api_key=os.getenv("DEEPSEEK_API_KEY"), base_url="https://api.deepseek.com")
 
 # dataset_name = "dbpedia_webnlg"
 # dataset_name = "webnlg"
 dataset_name = "wikidata_tekgen"
 prompt_folder_name = "10shot_prompts"   
-root_folder = r""
+root_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
 
 # run deepseek-v3
 model_name = "deepseek-v3"
@@ -21,7 +21,7 @@ model_name = "deepseek-v3"
 # --- 路径设置 ---
 prompts_root = os.path.join(root_folder, "prompts")
 prompts_folder = os.path.join(prompts_root, f"{dataset_name}_prompts", prompt_folder_name)
-output_folder_path = os.path.join(root_folder, "llm_outputs_lg", dataset_name, model_name)   
+output_folder_path = os.path.join(root_folder, "llm_outputs", f"{dataset_name}_llm_outputs", model_name, prompt_folder_name.replace("_prompts", ""))   
 os.makedirs(output_folder_path, exist_ok=True) 
 
 # --- 日志设置 ---

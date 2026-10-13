@@ -61,7 +61,7 @@ if __name__ == "__main__":
     # dataset_name = "dbpedia_webnlg"
     # dataset_name = "wikidata_tekgen"
     dataset_name = "webnlg"
-    root_folder = "C:/Users/yuche/OneDrive - TUM/phd/CIKM25/dataset_preprocessing/" + dataset_name
+    root_folder = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../../datasets", dataset_name)
     test_folder = os.path.join(root_folder, "test")
     ground_truth_folder = os.path.join(root_folder, "ground_truth")
     output_folder = os.path.join(root_folder, "test_ground_truth_relations")

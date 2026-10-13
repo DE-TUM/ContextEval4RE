@@ -24,7 +24,7 @@ data_folder = os.path.join(root_folder, "datasets")
 result_folder = os.path.join(root_folder, "llm_outputs")
 
 # Define evaluation results root
-eval_root_folder = os.path.join(root_folder, "eval_results_robust")
+eval_root_folder = os.path.join(root_folder, "eval_results")
 os.makedirs(eval_root_folder, exist_ok=True)
 
 ############################## 在 root_folder 定义后添加

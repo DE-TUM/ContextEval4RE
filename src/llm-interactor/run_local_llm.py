@@ -104,8 +104,8 @@ for dataset_name in datasets:
     # --------------------- 路径初始化 ---------------------
     root_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
     input_folder = os.path.join(root_folder, "prompts", f"{dataset_name}_prompts", f"{shot_number}_prompts")
-    output_root = os.path.join(root_folder, "llm_outputs_10shot", f"{dataset_name}_llm_outputs", model_id.split("/")[-1], shot_number)
-    log_dir = os.path.join(root_folder, "cluster_logs_10shot")
+    output_root = os.path.join(root_folder, "llm_outputs", f"{dataset_name}_llm_outputs", model_id.split("/")[-1], shot_number)
+    log_dir = os.path.join(root_folder, "logs")
     
     ensure_dir(log_dir)
     ensure_dir(output_root)

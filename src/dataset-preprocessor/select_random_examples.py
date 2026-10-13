@@ -38,7 +38,7 @@ def sample_examples_from_jsonl(input_folder: str, output_folder: str, num_sample
 if __name__ == "__main__":
     
     dataset_name = "dbpedia_webnlg"
-    root_folder = "C:\\Users\\yuche\\Desktop\\RE-analysis\\datasets\\" + dataset_name
+    root_folder = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../../datasets", dataset_name)
 
     input_dir = os.path.join(root_folder, "train")
     output_dir = os.path.join(root_folder, "examples_random")

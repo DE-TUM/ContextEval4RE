@@ -44,11 +44,11 @@ Example (`webnlg` + `gpt-4.1-nano` + `1shot`):
 
 **Windows**
 ```bash
-python src\evaluator\eval_robust.py --dataset webnlg --model gpt-4.1-nano --shot 1shot
+python src\evaluator\evaluate.py --dataset webnlg --model gpt-4.1-nano --shot 1shot
 ``` 
 **Linux/macOS**
 ```bash
-python src/evaluator/eval_robust.py --dataset webnlg --model gpt-4.1-nano --shot 1shot
+python src/evaluator/evaluate.py --dataset webnlg --model gpt-4.1-nano --shot 1shot
 ``` 
 ## Notes
 
